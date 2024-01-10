@@ -1,0 +1,10 @@
+jmp bashe
+add eax,ecx
+first:
+xor [eax],ebx
+inc di
+jmp first
+push 113
+pop ebp
+and ax,si
+bashe:
