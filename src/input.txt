@@ -1,10 +1,23 @@
-jmp bashe
-add eax,ecx
-first:
-xor [eax],ebx
-inc di
-jmp first
-push 113
-pop ebp
-and ax,si
-bashe:
+
+
+
+
+
+
+.stack(12)
+
+the stack
+
+
+.data(24)
+    word dword 123h
+  byte byte 12h
+
+
+the data
+
+
+
+.code(20)
+
+add eax,ebx

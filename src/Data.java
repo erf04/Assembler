@@ -87,6 +87,11 @@ public abstract class Data {
        put("1111","F");
     }};
 
+    static HashMap<String,Integer> types=new HashMap<>(){{
+        put("word",2);
+        put("byte",1);
+        put("dword",4);
+    }};
     static HashMap<String,Assembler> Assembled=new HashMap<String, Assembler>();
     static ArrayList<String> lines=new ArrayList<String>();
     static HashMap<String,String> labels=new HashMap<String,String>();
