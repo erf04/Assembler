@@ -10,14 +10,14 @@ the stack
 
 
 .data(24)
-    word dword 123h
+    dword dword 123h
   byte byte 12h
-
-
-the data
+        word word 12h
 
 
 
 .code(20)
 
-add eax,ebx
+push ax
+   push eax
+push 12
