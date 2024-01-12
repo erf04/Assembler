@@ -34,7 +34,7 @@ public class Assembler extends Data {
                this.operand1.type=OperandType.MEMORY;
                this.operand1.name=this.operand1.name.split("]")[0].substring(1).trim();
            }
-           else if (this.in(this.operand1.name,REG_32) || this.in(this.operand1.name,REG_16) || this.in(this.operand1.name,REG_8)){
+           else if (in(this.operand1.name,REG_32) || in(this.operand1.name,REG_16) || in(this.operand1.name,REG_8)){
                this.operand1.type=OperandType.REGISTER;
            }
            else if (this.instruction.equals("jmp")){
@@ -99,9 +99,9 @@ public class Assembler extends Data {
 
     }
 
-    public static void saveToDB(String[] input){
-        lines.addAll(Arrays.asList(input));
-        Assembler.length= input.length;
+    public static void saveToDB(ArrayList<String> input){
+        lines.addAll(input);
+        Assembler.length= input.size();
         findLabels();
 
     }
@@ -160,7 +160,7 @@ public class Assembler extends Data {
         return false;
     }
 
-    private boolean in(String x,String[] array){
+    private static boolean in(String x, String[] array){
         for (int i=0;i<array.length;i++){
             if (array[i].equals(x))
                 return true;
@@ -388,6 +388,20 @@ public class Assembler extends Data {
 
     public static int getSourceCodeLines(){
         return Assembler.length;
+    }
+
+    public static int getRegisterSize(Operand reg){
+        if (in(reg.name,REG_8)){
+            return 1;
+        }
+        else if (in(reg.name,REG_16)){
+            return 2;
+        }
+        else if (in(reg.name,REG_32)){
+            return 4;
+        }
+        System.out.println("register not found");
+        return -1;
     }
 
 
