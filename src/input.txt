@@ -19,5 +19,5 @@ the stack
 .code(20)
 
 push ax
-   push eax
-push 12
+  push eax
+pop ebx

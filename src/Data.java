@@ -95,7 +95,11 @@ public abstract class Data {
     static HashMap<String,Assembler> Assembled=new HashMap<String, Assembler>();
     static ArrayList<String> lines=new ArrayList<String>();
     static HashMap<String,String> labels=new HashMap<String,String>();
+    static HashMap<Segment,ArrayList<String>> segments=new HashMap<>();
 
+    static HashMap<String,String> codeSegmentResult=new HashMap<>();
+    static HashMap<String,String> stackSegmentResult=new HashMap<>();
+    static HashMap<String,String> dataSegmentResult=new HashMap<>();
 
 
 

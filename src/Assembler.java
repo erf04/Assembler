@@ -404,6 +404,15 @@ public class Assembler extends Data {
         return -1;
     }
 
+    public static ArrayList<String> toLittleEndian(String hex){
+        String[] bytes=hex.split(" ");
+        ArrayList<String> answer=new ArrayList<>();
+        for (int i = bytes.length-1; i >= 0; i--) {
+            answer.add(bytes[i]);
+        }
+        return answer;
+    }
+
 
 
 
