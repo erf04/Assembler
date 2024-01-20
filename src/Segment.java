@@ -324,7 +324,7 @@ public class Segment {
         int size=currentPointer-pointer;
         for (int i=0;i<size;i++){
             String value=hash.get(pointer+"");
-            System.out.format(leftAlignFormat,"  "+pointer,  "    "+value);
+            System.out.format(leftAlignFormat,"  "+pointer,  "   "+value);
             pointer++;
         }
         System.out.format("+-----------------+------+%n");

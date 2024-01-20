@@ -2,22 +2,19 @@
 
 
 
-
-
-.stack(12)
-
-the stack
-
+.stack(100)
 
 .data(24)
-    dword dword 123h
-  byte byte 12h
-        word word 12h
+    mydword dword 123h
+  mybyte byte 12h
+        myword word 12h
 
 
 
-.code(20)
+.code(10)
 
+test:
 push ax
   push eax
 pop ebx
+jmp test
