@@ -15,9 +15,6 @@ public class Main {
         Segment stacksegment=Segment.findBySegmentType(SegmentType.STACK);
         ArrayList<Segment> segmentsByArrangement=Segment.findSegmentArrangement();
 
-//        for (Segment segment:segmentsByArrangement){
-//            segment.memoryVisualize();
-//        }
         //handle xx's and mm's//
 
         Segment.showTheFinal(theFinalResult());
