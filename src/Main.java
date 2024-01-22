@@ -13,57 +13,35 @@ public class Main {
         Segment datasegment=Segment.findBySegmentType(SegmentType.DATA);
         Segment codesegment=Segment.findBySegmentType(SegmentType.CODE);
         Segment stacksegment=Segment.findBySegmentType(SegmentType.STACK);
-        ArrayList<Segment> segmentsByArrangement=findSegmentArrangement();
+        ArrayList<Segment> segmentsByArrangement=Segment.findSegmentArrangement();
 
-        for (Segment segment:segmentsByArrangement){
-            segment.memoryVisualize();
-        }
-
+//        for (Segment segment:segmentsByArrangement){
+//            segment.memoryVisualize();
+//        }
         //handle xx's and mm's//
 
+        Segment.showTheFinal(theFinalResult());
 
         System.out.println("the end");
     }
 
-    public static ArrayList<Segment> findSegmentArrangement(){
-        Segment codeSegment=Segment.findBySegmentType(SegmentType.CODE);
-        Segment stackSegment=Segment.findBySegmentType(SegmentType.STACK);
-        Segment dataSegment=Segment.findBySegmentType(SegmentType.DATA);
-        assert codeSegment!=null;
-        assert  stackSegment!=null;
-        assert dataSegment!=null;
-        int cs=0,ss=0,ds=0;
-        try {
-            cs=Integer.parseInt(codeSegment.addressPointer);
-        }catch (Exception e){
-            System.out.println("failed to process code pointer");
-            System.exit(-1);
-        }
-        try {
-            ss=Integer.parseInt(stackSegment.addressPointer);
-        }catch (Exception e){
-            System.out.println("failed to process stack pointer");
-            System.exit(-1);
-        }
-        try {
-            ds=Integer.parseInt(dataSegment.addressPointer);
-        }catch (Exception e){
-            System.out.println("failed to process data pointer");
-            System.exit(-1);
+
+
+    public static HashMap<String, String> theFinalResult(){
+        List<Segment> segmentArrangement=Segment.findSegmentArrangement();
+
+        HashMap<String,String> finalResult=new HashMap<>();
+        for (Segment segment:segmentArrangement){
+            finalResult.putAll(segment.getMemoryArrangement());
         }
 
-        TreeMap<Integer,Segment> list=new TreeMap<>(Integer::compareTo);
-        list.put(cs,codeSegment);
-        list.put(ss,stackSegment);
-        list.put(ds,dataSegment);
-//        System.out.println(list);
-        ArrayList<Segment> answer=new ArrayList<>();
-        for (Map.Entry<Integer,Segment> s:list.entrySet()){
-            answer.add(s.getValue());
+        for (int i=0;i<256;i++){
+            finalResult.putIfAbsent(i + "", "XX");
         }
-        return answer;
+        return finalResult;
 
     }
+
 
 
 

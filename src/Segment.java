@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Segment {
     SegmentType type;
@@ -169,6 +166,18 @@ public class Segment {
         //update the pointers
         codesegment.setCurrentPointer(codeCurrentAddr);
         stacksegment.setCurrentPointer(stackCurrentAddr);
+        //fill till to byte32 for code segment
+        int codebeginAddr=Integer.parseInt(codesegment.addressPointer);
+        for (int i=codeCurrentAddrInt;i<32+codebeginAddr;i++){
+            csResult.put(i+"","MM");
+        }
+
+        //fill till to byte32 for stack segment
+
+        int stackBeginAddr=Integer.parseInt(stacksegment.addressPointer);
+        for (int i=stackCurrentAddrInt;i<32+stackBeginAddr;i++){
+            ssResult.put(i+"","MM");
+        }
         //set result
         result.put(codesegment,csResult);
         result.put(stacksegment,ssResult);
@@ -176,9 +185,6 @@ public class Segment {
         Data.codeSegmentResult=csResult;
         Data.stackSegmentResult=ssResult;
         return result;
-
-
-
 
     }
 
@@ -218,6 +224,12 @@ public class Segment {
 
         }
         data.setCurrentPointer(currentAddr);
+        //fill till the 32
+        int currentAddrInt=Integer.parseInt(currentAddr);
+        int beginAddr=Integer.parseInt(data.addressPointer);
+        for (int i=currentAddrInt;i<32+beginAddr;i++){
+            result.put(i+"","MM");
+        }
         Data.dataSegmentResult=result;
         return result;
     }
@@ -299,8 +311,9 @@ public class Segment {
         return result;
     }
 
-    public void memoryVisualize(){
+    public static void memoryVisualizeByType(SegmentType type){
         HashMap<String,String> hash;
+        Segment segment=Segment.findBySegmentType(type);
         if (type==SegmentType.DATA){
             hash=Data.dataSegmentResult;
         }
@@ -314,13 +327,20 @@ public class Segment {
             System.out.println("something wrong");
             return;
         }
-        String leftAlignFormat = "| %-7s --> %-10s |%n";
 
+        assert segment != null;
+        showMemory(segment,hash);
+
+    }
+
+    public static void showMemory(Segment segment,HashMap<String,String> hash){
+        String leftAlignFormat = "| %-7s --> %-10s |%n";
         System.out.format("+-----------------+------+%n");
         System.out.format("| address -->    value   |%n");
         System.out.format("+-----------------+------+%n");
-        int pointer=Integer.parseInt(this.addressPointer);
-        int currentPointer=Integer.parseInt(this.currentPointer);
+        assert segment != null;
+        int pointer=Integer.parseInt(segment.addressPointer);
+        int currentPointer=Integer.parseInt(segment.currentPointer);
         int size=currentPointer-pointer;
         for (int i=0;i<size;i++){
             String value=hash.get(pointer+"");
@@ -328,8 +348,58 @@ public class Segment {
             pointer++;
         }
         System.out.format("+-----------------+------+%n");
+    }
 
+    public static void showTheFinal(HashMap<String,String> hash){
+        String leftAlignFormat = "| %-7s --> %-10s |%n";
+        System.out.format("+-----------------+------+%n");
+        System.out.format("| address -->    value   |%n");
+        System.out.format("+-----------------+------+%n");
+        int size=256;
+        for (int i=0;i<size;i++){
+            String value=hash.get(i+"");
+            System.out.format(leftAlignFormat,"  "+i,  "   "+value);
+        }
+        System.out.format("+-----------------+------+%n");
+    }
 
+    public static ArrayList<Segment> findSegmentArrangement(){
+        Segment codeSegment=Segment.findBySegmentType(SegmentType.CODE);
+        Segment stackSegment=Segment.findBySegmentType(SegmentType.STACK);
+        Segment dataSegment=Segment.findBySegmentType(SegmentType.DATA);
+        assert codeSegment!=null;
+        assert  stackSegment!=null;
+        assert dataSegment!=null;
+        int cs=0,ss=0,ds=0;
+        try {
+            cs=Integer.parseInt(codeSegment.addressPointer);
+        }catch (Exception e){
+            System.out.println("failed to process code pointer");
+            System.exit(-1);
+        }
+        try {
+            ss=Integer.parseInt(stackSegment.addressPointer);
+        }catch (Exception e){
+            System.out.println("failed to process stack pointer");
+            System.exit(-1);
+        }
+        try {
+            ds=Integer.parseInt(dataSegment.addressPointer);
+        }catch (Exception e){
+            System.out.println("failed to process data pointer");
+            System.exit(-1);
+        }
+
+        TreeMap<Integer,Segment> list=new TreeMap<>(Integer::compareTo);
+        list.put(cs,codeSegment);
+        list.put(ss,stackSegment);
+        list.put(ds,dataSegment);
+//        System.out.println(list);
+        ArrayList<Segment> answer=new ArrayList<>();
+        for (Map.Entry<Integer,Segment> s:list.entrySet()){
+            answer.add(s.getValue());
+        }
+        return answer;
 
     }
 }

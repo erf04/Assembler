@@ -1,14 +1,8 @@
-
-
-
-
 .stack(100)
-
-.data(24)
-    mydword dword 123h
-  mybyte byte 12h
-        myword word 12h
-
+.data(50)
+mydword dword 123h
+mybyte byte 12h
+myword word 12h
 
 
 .code(10)
